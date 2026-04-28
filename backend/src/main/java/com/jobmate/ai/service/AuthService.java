@@ -1,9 +1,11 @@
 package com.jobmate.ai.service;
 
+import com.jobmate.ai.dto.auth.AuthResponse;
 import com.jobmate.ai.dto.auth.LoginRequest;
 import com.jobmate.ai.dto.auth.RegisterRequest;
 import com.jobmate.ai.entity.User;
 import com.jobmate.ai.repository.UserRepository;
+import com.jobmate.ai.security.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,8 +16,9 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
-    public User register(RegisterRequest request) {
+    public AuthResponse register(RegisterRequest request) {
         if (userRepository.findByEmail(request.email()).isPresent()) {
             throw new RuntimeException("User with this email already exists");
         }
@@ -26,22 +29,30 @@ public class AuthService {
                 .role("USER")
                 .build();
 
-        return userRepository.save(user);
+        User savedUser = userRepository.save(user);
+        String token = jwtService.generateToken(savedUser);
+
+        return new AuthResponse(
+                token,
+                savedUser.getEmail(),
+                savedUser.getRole()
+        );
     }
 
-    public User login(LoginRequest request) {
+    public AuthResponse login(LoginRequest request) {
         User user = userRepository.findByEmail(request.email())
                 .orElseThrow(() -> new RuntimeException("Invalid email or password"));
 
-        boolean passwordMatches = passwordEncoder.matches(
-                request.password(),
-                user.getPassword()
-        );
-
-        if (!passwordMatches) {
+        if (!passwordEncoder.matches(request.password(), user.getPassword())) {
             throw new RuntimeException("Invalid email or password");
         }
 
-        return user;
+        String token = jwtService.generateToken(user);
+
+        return new AuthResponse(
+                token,
+                user.getEmail(),
+                user.getRole()
+        );
     }
 }

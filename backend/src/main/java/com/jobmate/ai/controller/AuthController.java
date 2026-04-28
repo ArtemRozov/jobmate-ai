@@ -1,5 +1,6 @@
 package com.jobmate.ai.controller;
 
+import com.jobmate.ai.dto.auth.AuthResponse;
 import com.jobmate.ai.dto.auth.LoginRequest;
 import com.jobmate.ai.dto.auth.RegisterRequest;
 import com.jobmate.ai.entity.User;
@@ -19,12 +20,12 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/register")
-    public User register(@Valid @RequestBody RegisterRequest request) {
+    public AuthResponse register(@Valid @RequestBody RegisterRequest request) {
         return authService.register(request);
     }
 
     @PostMapping("/login")
-    public User login(@Valid @RequestBody LoginRequest request) {
+    public AuthResponse login(@Valid @RequestBody LoginRequest request) {
         return authService.login(request);
     }
 }
