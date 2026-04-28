@@ -5,7 +5,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/jobmate_ai_db
     username: postgres
-    password: your_password
+    password: new_password
 
   jpa:
     hibernate:
