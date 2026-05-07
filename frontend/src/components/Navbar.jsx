@@ -14,7 +14,7 @@ function Navbar() {
 
   return (
     <header className="navbar">
-      <Link to="/dashboard" className="logo">
+      <Link to="/" className="logo">
         JobMate AI
       </Link>
 
