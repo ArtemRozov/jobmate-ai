@@ -117,9 +117,9 @@ backend/
 * [x] Project setup
 * [x] Database configuration
 * [x] User entity
-* [ ] Authentication (JWT)
-* [ ] Profile management
-* [ ] Job analysis with AI
+* [x] Authentication (JWT)
+* [x] Profile management
+* [x] Job analysis with AI
 * [ ] Frontend (React)
 * [ ] Deployment
 
