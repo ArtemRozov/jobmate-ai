@@ -1,24 +1,32 @@
 package com.jobmate.ai.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jobmate.ai.dto.analysis.AiJobAnalysisDto;
 import com.jobmate.ai.dto.analysis.JobAnalysisResponse;
+import com.jobmate.ai.entity.AnalysisResult;
 import com.jobmate.ai.entity.JobPosting;
 import com.jobmate.ai.entity.Profile;
 import com.jobmate.ai.entity.User;
+import com.jobmate.ai.repository.AnalysisResultRepository;
 import com.jobmate.ai.repository.JobPostingRepository;
 import com.jobmate.ai.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import dev.langchain4j.model.chat.ChatModel;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class AiAnalysisService {
 
-    private final ChatModel  chatModel;
+    private final ChatModel chatModel;
     private final ObjectMapper objectMapper;
     private final ProfileRepository profileRepository;
     private final JobPostingRepository jobPostingRepository;
+    private final AnalysisResultRepository analysisResultRepository;
 
     public JobAnalysisResponse analyzeJob(User user, Long jobId) {
         Profile profile = profileRepository.findByUser(user)
@@ -31,9 +39,69 @@ public class AiAnalysisService {
 
         try {
             String json = chatModel.chat(prompt);
-            return objectMapper.readValue(json, JobAnalysisResponse.class);
+
+            AiJobAnalysisDto aiResult = objectMapper.readValue(json, AiJobAnalysisDto.class);
+
+            AnalysisResult analysisResult = analysisResultRepository
+                    .findByJobPosting(jobPosting)
+                    .orElseGet(() -> AnalysisResult.builder()
+                            .jobPosting(jobPosting)
+                            .build());
+
+            analysisResult.setMatchScore(aiResult.matchScore());
+            analysisResult.setKeyRequirements(toJson(aiResult.keyRequirements()));
+            analysisResult.setMissingSkills(toJson(aiResult.missingSkills()));
+            analysisResult.setTailoredCvSummary(aiResult.tailoredCvSummary());
+            analysisResult.setCoverLetter(aiResult.coverLetter());
+            analysisResult.setInterviewQuestions(toJson(aiResult.interviewQuestions()));
+            analysisResult.setPreparationPlan(toJson(aiResult.preparationPlan()));
+
+            AnalysisResult savedResult = analysisResultRepository.save(analysisResult);
+
+            return mapToResponse(savedResult);
+
         } catch (Exception e) {
             throw new RuntimeException("Failed to analyze job posting with AI", e);
+        }
+    }
+
+    public JobAnalysisResponse getAnalysisResult(User user, Long jobId) {
+        JobPosting jobPosting = jobPostingRepository.findByIdAndUser(jobId, user)
+                .orElseThrow(() -> new RuntimeException("Job posting not found"));
+
+        AnalysisResult analysisResult = analysisResultRepository.findByJobPosting(jobPosting)
+                .orElseThrow(() -> new RuntimeException("Analysis result not found"));
+
+        return mapToResponse(analysisResult);
+    }
+
+    private JobAnalysisResponse mapToResponse(AnalysisResult result) {
+        return new JobAnalysisResponse(
+                result.getId(),
+                result.getMatchScore(),
+                fromJson(result.getKeyRequirements()),
+                fromJson(result.getMissingSkills()),
+                result.getTailoredCvSummary(),
+                result.getCoverLetter(),
+                fromJson(result.getInterviewQuestions()),
+                fromJson(result.getPreparationPlan()),
+                result.getCreatedAt()
+        );
+    }
+
+    private String toJson(List<String> list) {
+        try {
+            return objectMapper.writeValueAsString(list);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Failed to serialize list", e);
+        }
+    }
+
+    private List<String> fromJson(String json) {
+        try {
+            return objectMapper.readValue(json, new TypeReference<List<String>>() {});
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Failed to deserialize list", e);
         }
     }
 

@@ -5,10 +5,7 @@ import com.jobmate.ai.entity.User;
 import com.jobmate.ai.service.AiAnalysisService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/jobs")
@@ -23,5 +20,13 @@ public class AiAnalysisController {
             @PathVariable Long id
     ) {
         return aiAnalysisService.analyzeJob(user, id);
+    }
+
+    @GetMapping("/{id}/analysis")
+    public JobAnalysisResponse getAnalysisResult(
+            @AuthenticationPrincipal User user,
+            @PathVariable Long id
+    ) {
+        return aiAnalysisService.getAnalysisResult(user, id);
     }
 }
