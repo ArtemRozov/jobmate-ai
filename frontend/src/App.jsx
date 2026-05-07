@@ -4,6 +4,8 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Navbar from "./components/Navbar";
+import ProfilePage from "./pages/ProfilePage";
+import JobsPage from "./pages/JobsPage";
 
 function App() {
   return (
@@ -22,6 +24,24 @@ function App() {
             element={
               <ProtectedRoute>
                 <DashboardPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/jobs"
+            element={
+              <ProtectedRoute>
+                <JobsPage />
               </ProtectedRoute>
             }
           />

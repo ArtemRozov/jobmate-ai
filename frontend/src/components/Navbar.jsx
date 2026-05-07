@@ -20,13 +20,15 @@ function Navbar() {
 
       <nav className="nav-links">
         {token ? (
-          <>
-            <span className="nav-email">{email}</span>
-            <Link to="/dashboard">Dashboard</Link>
-            <button onClick={handleLogout} className="secondary-button">
-              Logout
-            </button>
-          </>
+            <>
+                <span className="nav-email">{email}</span>
+                <Link to="/dashboard">Dashboard</Link>
+                <Link to="/profile">Profile</Link>
+                <Link to="/jobs">Jobs</Link>
+                <button onClick={handleLogout} className="secondary-button">
+                    Logout
+                </button>
+            </>
         ) : (
           <>
             <Link to="/login">Login</Link>

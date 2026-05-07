@@ -240,4 +240,136 @@ textarea {
   .hero-card h1 {
     font-size: 34px;
   }
+
+  .success-message {
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: #ecfdf5;
+    color: #047857;
+    font-weight: 600;
+  }
+
+  .two-column-layout {
+    display: grid;
+    grid-template-columns: 420px 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: flex-start;
+    margin-bottom: 20px;
+  }
+
+  .section-header h2 {
+    margin: 0 0 6px;
+  }
+
+  .status-filter {
+    min-width: 150px;
+    padding: 10px 12px;
+    border: 1px solid #d6deea;
+    border-radius: 12px;
+    background: #ffffff;
+  }
+
+  .jobs-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .job-card {
+    padding: 20px;
+    border: 1px solid #e3e8f0;
+    border-radius: 18px;
+    background: #fbfdff;
+  }
+
+  .job-card-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .job-card h3 {
+    margin: 0 0 6px;
+  }
+
+  .status-badge {
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 800;
+  }
+
+  .status-saved {
+    background: #eef2ff;
+    color: #3730a3;
+  }
+
+  .status-applied {
+    background: #ecfdf5;
+    color: #047857;
+  }
+
+  .status-interview {
+    background: #fff7ed;
+    color: #c2410c;
+  }
+
+  .status-rejected {
+    background: #fff1f2;
+    color: #be123c;
+  }
+
+  .text-link {
+    display: inline-block;
+    margin-top: 6px;
+    color: #1d4ed8;
+    font-weight: 800;
+  }
+
+  .job-description-preview {
+    margin: 16px 0;
+    color: #46556f;
+    line-height: 1.55;
+  }
+
+  .job-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .job-actions select {
+    padding: 10px 12px;
+    border: 1px solid #d6deea;
+    border-radius: 12px;
+    background: #ffffff;
+  }
+
+  .danger-button {
+    border: none;
+    cursor: pointer;
+    border-radius: 12px;
+    padding: 10px 14px;
+    font-weight: 800;
+    background: #fff1f2;
+    color: #be123c;
+  }
+
+  @media (max-width: 960px) {
+    .two-column-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .section-header {
+      flex-direction: column;
+    }
+  }
 }
