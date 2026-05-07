@@ -372,4 +372,75 @@ textarea {
       flex-direction: column;
     }
   }
+
+  .hero-actions {
+    margin-top: 24px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .empty-analysis-card {
+    text-align: center;
+  }
+
+  .analysis-layout {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .analysis-wide {
+    grid-column: span 2;
+  }
+
+  .match-score-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .match-score {
+    font-size: 64px;
+    font-weight: 900;
+    color: #1d4ed8;
+    line-height: 1;
+    margin: 12px 0;
+  }
+
+  .analysis-list {
+    padding-left: 20px;
+    margin: 0;
+    color: #46556f;
+    line-height: 1.7;
+  }
+
+  .analysis-list li {
+    margin-bottom: 8px;
+  }
+
+  .text-block {
+    color: #46556f;
+    line-height: 1.7;
+    margin-bottom: 0;
+  }
+
+  .preserve-lines {
+    white-space: pre-line;
+  }
+
+  @media (max-width: 900px) {
+    .analysis-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .analysis-wide {
+      grid-column: span 1;
+    }
+
+    .match-score {
+      font-size: 52px;
+    }
+  }
 }

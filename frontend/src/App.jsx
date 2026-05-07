@@ -6,6 +6,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Navbar from "./components/Navbar";
 import ProfilePage from "./pages/ProfilePage";
 import JobsPage from "./pages/JobsPage";
+import JobAnalysisPage from "./pages/JobAnalysisPage";
 
 function App() {
   return (
@@ -42,6 +43,15 @@ function App() {
             element={
               <ProtectedRoute>
                 <JobsPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/jobs/:id/analysis"
+            element={
+              <ProtectedRoute>
+                <JobAnalysisPage />
               </ProtectedRoute>
             }
           />

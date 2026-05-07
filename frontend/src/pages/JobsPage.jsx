@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import apiClient from "../api/apiClient";
+import { Link } from "react-router-dom";
 
 const initialForm = {
   companyName: "",
@@ -234,26 +235,30 @@ function JobsPage() {
 
                   <div className="job-actions">
                     <select
-                      value={job.status}
-                      onChange={(event) =>
+                        value={job.status}
+                        onChange={(event) =>
                         handleStatusChange(job.id, event.target.value)
-                      }
+                        }
                     >
-                      {statuses.map((status) => (
+                        {statuses.map((status) => (
                         <option key={status} value={status}>
-                          {status}
+                            {status}
                         </option>
-                      ))}
+                        ))}
                     </select>
 
+                    <Link to={`/jobs/${job.id}/analysis`} className="secondary-button">
+                        Analysis
+                    </Link>
+
                     <button
-                      type="button"
-                      className="danger-button"
-                      onClick={() => handleDelete(job.id)}
+                        type="button"
+                        className="danger-button"
+                        onClick={() => handleDelete(job.id)}
                     >
-                      Delete
+                        Delete
                     </button>
-                  </div>
+                    </div>
                 </article>
               ))}
             </div>
