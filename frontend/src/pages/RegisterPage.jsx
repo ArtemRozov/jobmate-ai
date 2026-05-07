@@ -37,41 +37,48 @@ function RegisterPage() {
   }
 
   return (
-    <div>
-      <h1>Register</h1>
+    <div className="auth-wrapper">
+      <div className="card auth-card">
+        <h1>Create account</h1>
+        <p className="muted">Start tracking and analyzing your job applications.</p>
 
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Email</label>
-          <input
-            name="email"
-            type="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-        </div>
+        <form onSubmit={handleSubmit} className="form">
+          <div className="form-group">
+            <label>Email</label>
+            <input
+              name="email"
+              type="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="you@example.com"
+              required
+            />
+          </div>
 
-        <div>
-          <label>Password</label>
-          <input
-            name="password"
-            type="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-            minLength={6}
-          />
-        </div>
+          <div className="form-group">
+            <label>Password</label>
+            <input
+              name="password"
+              type="password"
+              value={formData.password}
+              onChange={handleChange}
+              placeholder="At least 6 characters"
+              required
+              minLength={6}
+            />
+          </div>
 
-        {error && <p style={{ color: "red" }}>{error}</p>}
+          {error && <p className="error-message">{error}</p>}
 
-        <button type="submit">Create account</button>
-      </form>
+          <button type="submit" className="primary-button">
+            Register
+          </button>
+        </form>
 
-      <p>
-        Already have an account? <Link to="/login">Login</Link>
-      </p>
+        <p className="auth-switch">
+          Already have an account? <Link to="/login">Login</Link>
+        </p>
+      </div>
     </div>
   );
 }

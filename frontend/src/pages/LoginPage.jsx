@@ -37,40 +37,47 @@ function LoginPage() {
   }
 
   return (
-    <div>
-      <h1>Login</h1>
+    <div className="auth-wrapper">
+      <div className="card auth-card">
+        <h1>Welcome back</h1>
+        <p className="muted">Log in to continue your job search workflow.</p>
 
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Email</label>
-          <input
-            name="email"
-            type="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-        </div>
+        <form onSubmit={handleSubmit} className="form">
+          <div className="form-group">
+            <label>Email</label>
+            <input
+              name="email"
+              type="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="you@example.com"
+              required
+            />
+          </div>
 
-        <div>
-          <label>Password</label>
-          <input
-            name="password"
-            type="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
-        </div>
+          <div className="form-group">
+            <label>Password</label>
+            <input
+              name="password"
+              type="password"
+              value={formData.password}
+              onChange={handleChange}
+              placeholder="Your password"
+              required
+            />
+          </div>
 
-        {error && <p style={{ color: "red" }}>{error}</p>}
+          {error && <p className="error-message">{error}</p>}
 
-        <button type="submit">Login</button>
-      </form>
+          <button type="submit" className="primary-button">
+            Login
+          </button>
+        </form>
 
-      <p>
-        No account? <Link to="/register">Register</Link>
-      </p>
+        <p className="auth-switch">
+          No account? <Link to="/register">Create one</Link>
+        </p>
+      </div>
     </div>
   );
 }

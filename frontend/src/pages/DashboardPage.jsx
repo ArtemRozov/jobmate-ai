@@ -1,10 +1,7 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import apiClient from "../api/apiClient";
 
 function DashboardPage() {
-  const navigate = useNavigate();
-
   const [message, setMessage] = useState("");
   const email = localStorage.getItem("email");
 
@@ -15,21 +12,38 @@ function DashboardPage() {
       .catch(() => setMessage("Backend connection failed or unauthorized"));
   }, []);
 
-  function handleLogout() {
-    localStorage.removeItem("token");
-    localStorage.removeItem("email");
-    localStorage.removeItem("role");
-    navigate("/login");
-  }
-
   return (
-    <div>
-      <h1>JobMate AI Dashboard</h1>
+    <div className="dashboard">
+      <section className="hero-card">
+        <div>
+          <p className="eyebrow">AI-powered job application assistant</p>
+          <h1>Welcome to JobMate AI</h1>
+          <p>
+            Track vacancies, compare them with your profile and generate tailored
+            application materials with AI.
+          </p>
+        </div>
+      </section>
 
-      <p>Logged in as: {email}</p>
-      <p>{message}</p>
+      <section className="grid">
+        <div className="card">
+          <h2>Account</h2>
+          <p className="muted">Logged in as:</p>
+          <p>{email}</p>
+        </div>
 
-      <button onClick={handleLogout}>Logout</button>
+        <div className="card">
+          <h2>Backend status</h2>
+          <p>{message}</p>
+        </div>
+
+        <div className="card">
+          <h2>Next steps</h2>
+          <p className="muted">
+            Profile, job tracker and AI analysis pages are coming next.
+          </p>
+        </div>
+      </section>
     </div>
   );
 }
