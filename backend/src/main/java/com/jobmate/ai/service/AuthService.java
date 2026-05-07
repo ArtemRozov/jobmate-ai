@@ -4,9 +4,11 @@ import com.jobmate.ai.dto.auth.AuthResponse;
 import com.jobmate.ai.dto.auth.LoginRequest;
 import com.jobmate.ai.dto.auth.RegisterRequest;
 import com.jobmate.ai.entity.User;
+import com.jobmate.ai.exception.BadRequestException;
 import com.jobmate.ai.repository.UserRepository;
 import com.jobmate.ai.security.JwtService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +22,7 @@ public class AuthService {
 
     public AuthResponse register(RegisterRequest request) {
         if (userRepository.findByEmail(request.email()).isPresent()) {
-            throw new RuntimeException("User with this email already exists");
+            throw new BadRequestException("User with this email already exists");
         }
 
         User user = User.builder()
@@ -41,10 +43,10 @@ public class AuthService {
 
     public AuthResponse login(LoginRequest request) {
         User user = userRepository.findByEmail(request.email())
-                .orElseThrow(() -> new RuntimeException("Invalid email or password"));
+                .orElseThrow(() -> new BadCredentialsException("Invalid email or password"));
 
         if (!passwordEncoder.matches(request.password(), user.getPassword())) {
-            throw new RuntimeException("Invalid email or password");
+            throw new BadCredentialsException("Invalid email or password");
         }
 
         String token = jwtService.generateToken(user);

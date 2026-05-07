@@ -9,6 +9,8 @@ import com.jobmate.ai.entity.AnalysisResult;
 import com.jobmate.ai.entity.JobPosting;
 import com.jobmate.ai.entity.Profile;
 import com.jobmate.ai.entity.User;
+import com.jobmate.ai.exception.AiAnalysisException;
+import com.jobmate.ai.exception.ResourceNotFoundException;
 import com.jobmate.ai.repository.AnalysisResultRepository;
 import com.jobmate.ai.repository.JobPostingRepository;
 import com.jobmate.ai.repository.ProfileRepository;
@@ -30,10 +32,10 @@ public class AiAnalysisService {
 
     public JobAnalysisResponse analyzeJob(User user, Long jobId) {
         Profile profile = profileRepository.findByUser(user)
-                .orElseThrow(() -> new RuntimeException("Profile not found. Please create your profile first."));
+                .orElseThrow(() -> new ResourceNotFoundException("Profile not found. Please create your profile first."));
 
         JobPosting jobPosting = jobPostingRepository.findByIdAndUser(jobId, user)
-                .orElseThrow(() -> new RuntimeException("Job posting not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Job posting not found"));
 
         String prompt = buildPrompt(profile, jobPosting);
 
@@ -61,16 +63,16 @@ public class AiAnalysisService {
             return mapToResponse(savedResult);
 
         } catch (Exception e) {
-            throw new RuntimeException("Failed to analyze job posting with AI", e);
+            throw new AiAnalysisException("Failed to analyze job posting with AI", e);
         }
     }
 
     public JobAnalysisResponse getAnalysisResult(User user, Long jobId) {
         JobPosting jobPosting = jobPostingRepository.findByIdAndUser(jobId, user)
-                .orElseThrow(() -> new RuntimeException("Job posting not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Job posting not found"));
 
         AnalysisResult analysisResult = analysisResultRepository.findByJobPosting(jobPosting)
-                .orElseThrow(() -> new RuntimeException("Analysis result not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Analysis result not found"));
 
         return mapToResponse(analysisResult);
     }

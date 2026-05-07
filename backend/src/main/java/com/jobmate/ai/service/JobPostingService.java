@@ -6,6 +6,7 @@ import com.jobmate.ai.dto.job.UpdateJobStatusRequest;
 import com.jobmate.ai.entity.JobPosting;
 import com.jobmate.ai.entity.JobStatus;
 import com.jobmate.ai.entity.User;
+import com.jobmate.ai.exception.ResourceNotFoundException;
 import com.jobmate.ai.repository.JobPostingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -74,7 +75,7 @@ public class JobPostingService {
 
     private JobPosting findJobOwnedByUser(User user, Long jobId) {
         return jobPostingRepository.findByIdAndUser(jobId, user)
-                .orElseThrow(() -> new RuntimeException("Job posting not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Job posting not found"));
     }
 
     private JobPostingResponse mapToResponse(JobPosting jobPosting) {

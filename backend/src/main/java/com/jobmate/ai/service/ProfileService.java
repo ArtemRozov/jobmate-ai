@@ -4,6 +4,7 @@ import com.jobmate.ai.dto.profile.ProfileRequest;
 import com.jobmate.ai.dto.profile.ProfileResponse;
 import com.jobmate.ai.entity.Profile;
 import com.jobmate.ai.entity.User;
+import com.jobmate.ai.exception.ResourceNotFoundException;
 import com.jobmate.ai.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,7 @@ public class ProfileService {
 
     public ProfileResponse getMyProfile(User user) {
         Profile profile = profileRepository.findByUser(user)
-                .orElseThrow(() -> new RuntimeException("Profile not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Profile not found"));
 
         return mapToResponse(profile);
     }
